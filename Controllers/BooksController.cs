@@ -28,5 +28,39 @@ namespace LibraryManagementSystem.Controllers
             _context.SaveChanges();
             return Ok(book);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateBook(int id, Book book)
+        {
+            var existingBook = _context.Books.Find(id);
+
+            if (existingBook == null)
+                return NotFound("Book not found");
+
+            existingBook.Title = book.Title;
+            existingBook.Author = book.Author;
+            existingBook.ISBN = book.ISBN;
+            existingBook.PublishedYear = book.PublishedYear;
+            existingBook.AvailableCopies = book.AvailableCopies;
+
+            _context.SaveChanges();
+            return Ok(existingBook);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteBook(int id)
+        {
+            var book = _context.Books.Find(id);
+
+            if (book == null)
+                return NotFound("Book not found");
+
+            _context.Books.Remove(book);
+            _context.SaveChanges();
+
+            return Ok("Book deleted successfully");
+        }
+
+
     }
 }
